@@ -3,3 +3,4 @@ Gunicorn
 Pillow
 numpy
 werkzeug
+flask_wtf
