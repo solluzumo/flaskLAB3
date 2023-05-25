@@ -23,7 +23,7 @@ def protected():
 @app.route('/', methods=['GET', 'POST'])
 def submit():
     form = MyForm()
-    if request.method == "POST":
+    if request.method == "POST" and form.recaptcha.data:
         return redirect(url_for('protected', captcha='solved'))
 
     return render_template('index.html', form=form)
