@@ -7,6 +7,7 @@
 
     <h1>Решите капчу, чтобы продолжить!</h1>
     <form method="POST" action="/">
+        {{ form.hidden_tag() }}
         {{ form.recaptcha() }}
         {{ form.submit() }}
     </form>

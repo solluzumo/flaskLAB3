@@ -4,6 +4,7 @@ import os
 from werkzeug.utils import secure_filename
 import numpy as np
 from forms import MyForm
+import matplotlib.pyplot as plt
 
 app = Flask(__name__, static_folder='static')
 app.config['UPLOAD_FOLDER'] = 'upload'
@@ -23,7 +24,7 @@ def protected():
 @app.route('/', methods=['GET', 'POST'])
 def submit():
     form = MyForm()
-    if request.method == "POST" and form.recaptcha.data:
+    if form.validate_on_submit():
         return redirect(url_for('protected', captcha='solved'))
 
     return render_template('index.html', form=form)
@@ -48,10 +49,11 @@ def upload():
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
         image_changed_path = "static/changed"
-
         # Обработка изображения
         swap_and_save(image_path,filename,image_changed_path)
-        return render_template("changed_image.html",filename = filename)
+        graname = filename.split('.')[0]+"_graph.png"
+        plot_color_distribution(image_path,graname)
+        return render_template("changed_image.html",filename = filename, graph_name = graname)
     else:
         return 'Недопустимый файл'
 
@@ -96,6 +98,31 @@ def swap_and_save(image_path, file_name,image_folder):
     # Сохраняем поменянные верхнюю и нижнюю части изображения
     swapped_image_tb.save(f"{image_folder}/up_down_{file_name}")
 
+def plot_color_distribution(image_path,name):
+    # Загрузка изображения с помощью Pillow
+    image = Image.open(image_path)
+
+    # Преобразование изображения в массив NumPy
+    image_array = np.array(image)
+
+    # Получение гистограммы распределения цветов по каналам
+    red_hist = np.histogram(image_array[:, :, 0], bins=256, range=(0, 256))
+    green_hist = np.histogram(image_array[:, :, 1], bins=256, range=(0, 256))
+    blue_hist = np.histogram(image_array[:, :, 2], bins=256, range=(0, 256))
+
+    # Рисование графика распределения цветов
+    plt.figure(figsize=(10, 6))
+    plt.title('Color Distribution')
+    plt.xlabel('Color Intensity')
+    plt.ylabel('Frequency')
+    plt.xlim(0, 255)
+    plt.plot(red_hist[1][:-1], red_hist[0], color='red', label='Red')
+    plt.plot(green_hist[1][:-1], green_hist[0], color='green', label='Green')
+    plt.plot(blue_hist[1][:-1], blue_hist[0], color='blue', label='Blue')
+    plt.legend()
+
+    plt.savefig(f"static/graph/{name}", dpi=300, bbox_inches='tight')
+    plt.close()
 
 if __name__ == '__main__':
     app.run()
