@@ -27,9 +27,10 @@ def protected():
     # Проверяем, решена ли reCAPTCHA
     if request.args.get('captcha') == 'solved':
         return redirect(url_for('image', captcha='solved'))
+    if request.args.get('captcha') == 'unsolved':
+        return "Captcha not succed"
+    return abort(403)
 
-    # Возвращает ошибку 403 (Forbidden), если капча не решена
-    return "Captcha not succed"
 @app.route('/', methods=['GET', 'POST'])
 def submit():
     form = MyForm()
