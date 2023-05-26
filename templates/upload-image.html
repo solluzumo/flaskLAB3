@@ -7,6 +7,10 @@
     <h1>Загрузите изображение</h1>
     <form method="POST" enctype="multipart/form-data" action="/image/upload">
       <input type="file" name="image">
+    <div>
+        <label for="{{ form.flip_direction.id }}">Flip Direction:</label>
+        {{ form.flip_direction }}
+    </div>
       <input type="submit" value="Загрузить">
     </form>
   </body>

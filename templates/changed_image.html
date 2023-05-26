@@ -6,8 +6,8 @@
 </head>
 <body>
     <h1>Изменённые изображения</h1>
-    <img src='{{ url_for('static', filename='changed/left_right_' + filename) }}' alt='freedickcack' height="300px" width="300px">
-    <img src='{{ url_for('static', filename='changed/up_down_' + filename) }}' alt='freedickcack' height="300px" width="300x">
+    <img src='{{ url_for('static', filename = 'changed/'+filename) }}' alt='freedickcack' height="300px" width="300px">
     <img src='{{ url_for('static', filename='graph/'+ graph_name) }}' alt='freedickcack' height="300px" width="370x">
+    <h2><a href="/">Вернуться на начальную страницу</a></h2>
 </body>
 </html>
