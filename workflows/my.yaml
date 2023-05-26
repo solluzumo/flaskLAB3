@@ -1,5 +1,5 @@
 name: 'test my project'
-on: [push]
+on: [commit]
 jobs:
   checks:
     runs-on: windows-latest
