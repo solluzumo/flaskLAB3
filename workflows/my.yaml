@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      -
 jobs:
   checks:
     runs-on: windows-latest
@@ -23,3 +22,9 @@ jobs:
         run: pip install -r requirements.txt
       - name: Start tests
         run: pytest --junitxml=pytest_results.xml test_my_app.py
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: Test Results
+          path: test_results.xml
