@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Start tests
-        run: pytest --junitxml=pytest_results.xml test_my_app.py
+        run: pytest test_my_app.py
 
       - name: Upload test results
         uses: actions/upload-artifact@v2
